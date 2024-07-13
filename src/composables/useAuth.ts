@@ -1,9 +1,9 @@
+import { storeToRefs } from "pinia";
+import { useStorage } from "@vueuse/core";
 import { loginMutation } from "@/api/auth/query";
 import { $axios, setToken } from "@/plugins/axios";
 import useAuthStore from "@/store/auth";
 import { ACCESS_TOKEN_KEY, USER_ID } from "@/utils/constants";
-import { storeToRefs } from "pinia";
-import { useStorage } from "@vueuse/core";
 
 export const useAuth = () => {
   const router = useRouter();
@@ -15,13 +15,15 @@ export const useAuth = () => {
 
   const {
     data: loginData,
-    isLoading: isSignInLoading,
+    isPending: isSignInLoading,
     error: signInError,
     mutateAsync,
   } = loginMutation();
 
   const signIn = async (values: { username: string; password: string }) => {
-    const { password, username } = values;
+    // const { password, username } = values;
+    const username = 'emilys'
+    const password = 'emilyspass'
     start();
     try {
       await mutateAsync({

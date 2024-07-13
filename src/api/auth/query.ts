@@ -1,5 +1,5 @@
-import { UseQueryOptions, useMutation, useQuery } from "vue-query";
-import { getUser, login } from "./auth";
+import { UseQueryOptions, useMutation } from "@tanstack/vue-query";
+import { login } from "./auth";
 import { ILoginBody } from "@/types/auth.types";
 
 export const loginMutation = (options?: UseQueryOptions) => {

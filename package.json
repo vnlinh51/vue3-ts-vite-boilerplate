@@ -22,6 +22,7 @@
     "@mdi/font": "5.9.55",
     "@popperjs/core": "^2.11.6",
     "@storybook/vue3": "^6.5.15",
+    "@tanstack/vue-query": "^5.51.1",
     "@vueuse/core": "^9.1.1",
     "axios": "^0.27.2",
     "lodash": "^4.17.21",
@@ -35,7 +36,6 @@
     "vee-validate": "^4.5.11",
     "vue": "latest",
     "vue-awesome-swiper": "^5.0.1",
-    "vue-query": "^1.26.0",
     "vue-router": "^4.0.16",
     "vue-waypoint": "^4.2.5",
     "yup": "^0.32.11"

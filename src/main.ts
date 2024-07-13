@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import axios from "axios";
 import { createPinia } from "pinia";
-import { VueQueryPlugin } from "vue-query";
+import { VueQueryPlugin } from "@tanstack/vue-query";
 import mitt from "mitt";
 import App from "@/App.vue";
 import interceptors from "@/plugins/interceptors";

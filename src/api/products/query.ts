@@ -1,9 +1,8 @@
 import {
-  UseQueryOptions,
   useInfiniteQuery,
   useMutation,
   useQuery,
-} from "vue-query";
+} from "@tanstack/vue-query";
 import {
   addProductToCart,
   fetchCategories,
@@ -14,27 +13,47 @@ import {
 } from "./product";
 import { IParams } from "@/types/product.types";
 
+// export const useListProductsInfiniteQuery = () => {
+//   return useInfiniteQuery(
+//     "projects",
+//     ({ pageParam: skip }) =>
+//       fetchProduct({
+//         limit: 10,
+//         skip,
+//       }),
+//     {
+//       getNextPageParam: (lastPage) => {
+//         if (lastPage.skip + lastPage.limit >= lastPage.total) return undefined;
+
+//         return lastPage.skip + lastPage.limit;
+//       },
+//       staleTime: 1000000,
+//     }
+//   );
+// };
+
 export const useListProductsInfiniteQuery = () => {
-  return useInfiniteQuery(
-    "projects",
-    ({ pageParam: skip }) =>
+  return useInfiniteQuery({
+    queryKey: ["projects"],
+    queryFn: ({ pageParam = 0 }) =>
       fetchProduct({
         limit: 10,
-        skip,
+        skip: pageParam,
       }),
-    {
-      getNextPageParam: (lastPage) => {
-        if (lastPage.skip + lastPage.limit >= lastPage.total) return undefined;
-
-        return lastPage.skip + lastPage.limit;
-      },
-      staleTime: 1000000,
-    }
-  );
+    getNextPageParam: (lastPage) => {
+      if (lastPage.skip + lastPage.limit >= lastPage.total) return undefined;
+      return lastPage.skip + lastPage.limit;
+    },
+    staleTime: 1000000,
+    initialPageParam: 0,
+  });
 };
 
 export const useProductsCategories = () => {
-  return useQuery("products-categories", fetchCategories);
+  return useQuery({
+    queryKey:["products-categories"],
+    queryFn: fetchCategories
+  });
 };
 
 export const useGetProductsByCategory = (
@@ -42,36 +61,46 @@ export const useGetProductsByCategory = (
   params?: IParams,
   enabled?: boolean
 ) => {
-  return useQuery(
-    ["products-categories", categoryId],
-    () => fetchProductOfCategory(categoryId, params),
-    {
-      enabled,
-    }
-  );
+  return useQuery({
+    queryKey:["products-categories", categoryId],
+    queryFn: () => fetchProductOfCategory(categoryId, params),
+    enabled,
+  });
 };
 
 export const useGetUserCarts = (userId: string | number) => {
-  return useQuery("user-carts", () => fetchUserCarts(userId), {
+  return useQuery({
+    queryKey: ["user-carts"],
+    queryFn: () => fetchUserCarts(userId),
     select: (data) => data.carts?.[0] ?? [],
   });
 };
 
 export const useGetProductDetails = (productId: string | number) => {
-  return useQuery(["product-details", productId], () =>
-    fetchProductDetails(productId)
-  );
+  return useQuery({
+    queryKey: ["product-details", productId],
+    queryFn: () => fetchProductDetails(productId),
+  });
 };
 
+// export const useAddProductToCartMutation = () => {
+//   return useMutation({
+//     mutationFn: ["add-product-to-cart"],
+//     ({
+//       userId,
+//       products,
+//     }: {
+//       userId: string | number;
+//       products: { id: string | number; quantity: number }[];
+//     }) => addProductToCart(userId, products)
+//   });
+// };
+
 export const useAddProductToCartMutation = () => {
-  return useMutation(
-    ["add-product-to-cart"],
-    ({
-      userId,
-      products,
-    }: {
+  return useMutation({
+    mutationFn: ({ userId, products }: {
       userId: string | number;
       products: { id: string | number; quantity: number }[];
-    }) => addProductToCart(userId, products)
-  );
+    }) => addProductToCart(userId, products),
+  });
 };
